@@ -1,3 +1,5 @@
+# Customer Churn Prediction – ML/DL Models
+
 ## Project Overview
 
 This project implements and compares multiple classification models (MLP with ReLU, MLP with LeakyReLU, and Logistic Regression) for predicting customer churn (`Exited`). The pipeline includes:
@@ -47,14 +49,13 @@ Each model outputs logits that are converted into probabilities of class `1` (Ex
 
 Outputs:
 
-1. **Confusion matrix + ROC curve** plots (threshold=0.5 and threshold=0.9).
-
-   * Saved under `exercise1_plot/trained_model.jpg`.
-2. **Trained model parameters** saved to `trained_model.pth`.
+1. **Confusion matrix + ROC curve** plots (default threshold=0.9).
+   → Saved under `exercise1_plot/Trained_MLP_ReLU_visualization.jpg`.
+2. **Trained model parameters** saved to `checkpoints/Trained_MLP_ReLU.pth` if save_model flag is true (see parameter setting below).
 
 ---
 
-### 4. Evaluation of Pretrained Models
+### 4. Evaluation of Pretrained Models (option, see parameter setting below)
 
 Three pretrained models are evaluated on the validation set:
 
@@ -65,11 +66,9 @@ Three pretrained models are evaluated on the validation set:
 Outputs:
 
 1. **Confusion matrix + ROC curve** plots for each model.
-
-   * Saved under `exercise1_plot/{model_name}_visualization.jpg`.
+   → Saved under `exercise1_plot/{model_name}_visualization.jpg`.
 2. **ROC comparison plot** across all three models.
-
-   * Saved under `exercise1_plot/ROC_3_model_comparison.jpg`.
+   → Saved under `exercise1_plot/ROC_3_model_comparison.jpg`.
 
 ---
 
@@ -84,19 +83,48 @@ Outputs:
 
 ---
 
+## Run Instructions
+
+The script can be controlled via command-line arguments:
+
+```bash
+python main.py \
+    --train_file train.csv \
+    --test_file test.csv \
+    --model mlp_relu \
+    --epochs 10 \
+    --lr 0.001 \
+    --thres 0.9 \
+    --pretrained \
+    --save_model
+```
+
+### Available Parameters
+
+* `--train_file` (str, default=`train.csv`): Path to training CSV file
+* `--test_file` (str, default=`test.csv`): Path to test CSV file
+* `--model` (str, default=`mlp_relu`): Model to train and evaluate. Options: `mlp_relu`, `mlp_leakyrelu`, `logreg`
+* `--epochs` (int, default=`10`): Number of training epochs
+* `--lr` (float, default=`0.001`): Learning rate
+* `--thres` (float, default=`0.9`): Threshold for binary classification
+* `--pretrained` (flag): If set, evaluates pretrained models instead of training
+* `--save_model` (flag): If set, saves the trained model to disk
+
+---
+
 ## Final Outputs
 
 ### Trained Model
 
-* ✅ `exercise1_plot/trained_model.jpg` (confusion matrix + ROC)
-* ✅ `trained_model.pth` (model weights)
-* ✅ `Predicted_Exited_from_test.csv` (predictions on test set)
+* ✅ `exercise1_plot/Trained_MLP_ReLU_visualization.jpg` (confusion matrix + ROC)
+* ✅ `checkpoints/Trained_MLP_ReLU.pth` (model weights)
+* ✅ `exercise1_predicted/Predicted_Exited_from_test_Trained_MLP_ReLU.csv` (predictions on test set)
 
 ### Pretrained Models
 
 * ✅ `exercise1_plot/{model_name}_visualization.jpg` (confusion matrix + ROC for each model)
 * ✅ `exercise1_plot/ROC_3_model_comparison.jpg` (combined ROC comparison)
-* ✅ `model_predictions_test.csv` (predictions on test set)
+* ✅ `exercise1_predicted/Predicted_Exited_from_test_{model_name}.csv` (predictions on test set)
 
 ---
 
@@ -107,19 +135,6 @@ Outputs:
 
 ---
 
-## Run Instructions
-
-```bash
-python main.py
-```
-
-Make sure `train.csv` and `test.csv` are present in the same directory.
-
----
-
-Absolutely! We can add a **“Discussion & Potential Improvements”** section to your README. Here’s a refined version that integrates your points clearly and professionally:
-
----
 
 ## Discussion & Potential Improvements
 
@@ -132,6 +147,7 @@ Absolutely! We can add a **“Discussion & Potential Improvements”** section t
 
    * Not all features may provide useful information. Some, such as `Gender` or raw `Age`, might be less informative.
    * Dynamic or iterative feature selection could help identify the most relevant subset of features, improving model performance and reducing overfitting.
+   * See [Dynamic Feature Selection](https://github.com/iancovert/dynamic-selection?tab=readme-ov-file) for a reference implementation.
 
 3. **Data imbalance**
 
